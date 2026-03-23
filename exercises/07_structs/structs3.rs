@@ -24,9 +24,10 @@ impl Package {
     }
 
     // TODO: Add the correct return type to the function signature.
-    fn is_international(&self) {
+    fn is_international(&self) -> bool {
         // TODO: Read the tests that use this method to find out when a package
         // is considered international.
+        self.sender_country == self.recipient_country
     }
 
     // TODO: Add the correct return type to the function signature.
