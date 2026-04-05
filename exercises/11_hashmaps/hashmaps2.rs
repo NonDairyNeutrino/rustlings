@@ -8,7 +8,7 @@
 // to insert any more of the fruits that are already in the basket (Apple,
 // Mango, and Lychee).
 
-use std::{collections::HashMap, iter::Enumerate};
+use std::collections::HashMap;
 
 #[derive(Hash, PartialEq, Eq, Debug)]
 enum Fruit {
@@ -28,16 +28,16 @@ fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
         Fruit::Pineapple,
     ];
 
-    for (i, fruit_ref) in fruit_kinds.iter().enumerate() {
+    for (p, fruit) in (0_u32..).zip(fruit_kinds.into_iter()) {
         // TODO: Insert new fruits if they are not already present in the
         // basket. Note that you are not allowed to put any type of fruit that's
         // already present!
 
         // add new fruits in powers of 2
-        let p: u32 = 2 ^ i as u32;
+        let nfruits: u32 = 2 ^ p;
 
-        let fruit: Fruit = *fruit_ref;
-        basket.entry(fruit).or_insert_with_key(|_| p);
+        // let fruit: Fruit = *fruit_ref;
+        basket.entry(fruit).or_insert_with_key(|_| nfruits);
     }
 }
 
