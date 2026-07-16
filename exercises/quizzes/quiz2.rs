@@ -26,8 +26,40 @@ enum Command {
 mod my_module {
     use super::Command;
 
-    // TODO: Complete the function as described above.
-    // pub fn transformer(input: ???) -> ??? { ??? }
+    // TYPES
+    // Convienience type
+    struct Pair {
+        // field ordering should have String first to have better memory alignment
+        arg: String,
+        com: Command,
+    }
+
+    // FUNCTIONS
+    fn kernel(pair: Pair) -> String {
+        let str = pair.arg;
+        let out = match pair.com {
+            Command::Uppercase => str.to_uppercase(),
+            Command::Trim => str.trim().to_string(),
+            Command::Append(post) => str + &post.to_string(),
+        };
+        return out;
+    }
+
+    // call to a kernel function for modularity
+    pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
+        // convert vector of tuples to vector of Pairs
+        let pair_vec: Vec<Pair> = input
+            .iter()
+            .map(|tup| -> Pair {
+                Pair {
+                    arg: tup.0,
+                    com: tup.1,
+                }
+            })
+            .collect();
+
+        pair_vec.iter().map(kernel)
+    }
 }
 
 fn main() {
@@ -39,6 +71,7 @@ mod tests {
     // TODO: What do we need to import to have `transformer` in scope?
     // use ???;
     use super::Command;
+    use super::my_module::transformer;
 
     #[test]
     fn it_works() {
