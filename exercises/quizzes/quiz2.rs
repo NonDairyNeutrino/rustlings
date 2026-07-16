@@ -26,39 +26,22 @@ enum Command {
 mod my_module {
     use super::Command;
 
-    // TYPES
-    // Convienience type
-    struct Pair {
-        // field ordering should have String first to have better memory alignment
-        arg: String,
-        com: Command,
-    }
-
     // FUNCTIONS
-    fn kernel(pair: Pair) -> String {
-        let str = pair.arg;
-        let out = match pair.com {
+    fn kernel(strcom: (String, Command)) -> String {
+        let (str, com) = strcom;
+        match com {
             Command::Uppercase => str.to_uppercase(),
             Command::Trim => str.trim().to_string(),
             Command::Append(post) => str + &post.to_string(),
-        };
-        return out;
+        }
     }
 
     // call to a kernel function for modularity
     pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
-        // convert vector of tuples to vector of Pairs
-        let pair_vec: Vec<Pair> = input
+        input
             .iter()
-            .map(|tup| -> Pair {
-                Pair {
-                    arg: tup.0,
-                    com: tup.1,
-                }
-            })
-            .collect();
-
-        pair_vec.iter().map(kernel)
+            .map(|strcom: (&String, Command)| -> String { kernel(strcom) })
+            .collect()
     }
 }
 
