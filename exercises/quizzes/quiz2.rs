@@ -27,21 +27,24 @@ mod my_module {
     use super::Command;
 
     // FUNCTIONS
-    fn kernel(strcom: (String, Command)) -> String {
+    fn kernel(strcom: &(String, Command)) -> String {
         let (str, com) = strcom;
         match com {
             Command::Uppercase => str.to_uppercase(),
             Command::Trim => str.trim().to_string(),
-            Command::Append(post) => str + &post.to_string(),
+            Command::Append(cnt) => str.to_owned() + &"bar".repeat(*cnt), // this line is ass
         }
     }
 
     // call to a kernel function for modularity
     pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
-        input
-            .iter()
-            .map(|strcom: (&String, Command)| -> String { kernel(strcom) })
-            .collect()
+        let outlen: usize = input.len();
+        let mut out: Vec<String> = Vec::with_capacity(outlen);
+        for strcom in input {
+            let tfed: String = kernel(&strcom);
+            out.push(tfed);
+        }
+        out
     }
 }
 
