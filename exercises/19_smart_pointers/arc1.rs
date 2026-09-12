@@ -29,7 +29,7 @@ fn main() {
 
     for offset in 0..8 {
         // TODO: Define `child_numbers` using `shared_numbers`.
-        // let child_numbers = ???;
+        let child_numbers = shared_numbers.clone();
 
         let handle = thread::spawn(move || {
             let sum: u32 = child_numbers.iter().filter(|&&n| n % 8 == offset).sum();
